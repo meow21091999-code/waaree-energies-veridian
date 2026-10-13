@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VERIDIAN — Waaree Energies Ltd (WAAREEENER)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f7f4ee; --surface:#fffdf8; --surface-2:#f1ece1; --border:rgba(30,58,95,.14);
+    --text:#1b2430; --text-dim:#5c6675; --navy:#1e3a5f; --navy-dim:#e6ebf2;
+    --gold:#b8892b; --gold-dim:#f3e7cd; --red:#9d2235; --red-dim:#f6e2e5;
+    --amber:#b06a10; --amber-dim:#f6ead6; --green:#2f6b46; --green-dim:#e2efe6;
+    --shadow:0 1px 2px rgba(27,36,48,.05),0 8px 24px -12px rgba(27,36,48,.18);
+    --font-body:'IBM Plex Sans',system-ui,sans-serif;
+    --font-head:'Instrument Serif',Georgia,serif;
+    --font-mono:'IBM Plex Mono',ui-monospace,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#141a22; --surface:#1b232d; --surface-2:#222c38; --border:rgba(255,255,255,.10);
+      --text:#e8e4da; --text-dim:#9aa5b1; --navy:#8fb3dd; --navy-dim:#233240;
+      --gold:#e0b658; --gold-dim:#3a3020; --red:#e78b98; --red-dim:#3a2027;
+      --amber:#e0a44e; --amber-dim:#3a2e1c; --green:#7fc99b; --green-dim:#1e3327;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 30px -14px rgba(0,0,0,.6);
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(184,137,43,.10), transparent 60%),
+      radial-gradient(900px 500px at -10% 10%, rgba(30,58,95,.08), transparent 55%),
+      var(--bg);
+    color:var(--text);font-family:var(--font-body);line-height:1.6;
+    -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1060px;margin:0 auto;padding:40px 24px 80px}
+  h1,h2,h3{font-family:var(--font-head);font-weight:400;letter-spacing:.2px;line-height:1.15}
+  h1{font-size:clamp(2rem,5vw,3.2rem);margin:0 0 6px}
+  h2{font-size:clamp(1.4rem,3vw,1.9rem);margin:0 0 14px}
+  h3{font-size:1.15rem;margin:0 0 8px}
+  .mono{font-family:var(--font-mono)}
+  .kicker{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:500}
+  .sub{color:var(--text-dim);font-size:.98rem}
+  .section-label{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-dim);display:flex;align-items:center;gap:9px;margin-bottom:14px}
+  .section-label::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--gold);flex:none}
+  header.hero{border-bottom:1px solid var(--border);padding-bottom:26px;margin-bottom:34px}
+  .ticker{font-family:var(--font-mono);font-size:.85rem;color:var(--text-dim);margin-top:4px}
+  section{margin:0 0 40px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 24px;box-shadow:var(--shadow)}
+  .hero-card{background:linear-gradient(180deg,var(--surface),var(--surface-2));border:1px solid var(--border);border-radius:16px;padding:28px;box-shadow:var(--shadow)}
+  .verdict{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-mono);font-weight:500;font-size:1rem;letter-spacing:.06em;padding:7px 16px;border-radius:999px;background:var(--red-dim);color:var(--red);border:1px solid rgba(157,34,53,.25)}
+  .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:22px}
+  .metric{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+  .metric .lbl{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim)}
+  .metric .val{font-size:1.35rem;font-weight:600;margin-top:5px;font-variant-numeric:tabular-nums}
+  .metric .note{font-size:.78rem;color:var(--text-dim)}
+  table{width:100%;border-collapse:collapse;font-size:.86rem;font-variant-numeric:tabular-nums}
+  .tablewrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px;background:var(--surface)}
+  thead th{position:sticky;top:0;background:var(--surface-2);text-align:left;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);padding:11px 13px;border-bottom:1px solid var(--border);white-space:nowrap}
+  td{padding:10px 13px;border-bottom:1px solid var(--border);vertical-align:top}
+  tbody tr:nth-child(even){background:rgba(30,58,95,.025)}
+  tbody tr:hover{background:rgba(184,137,43,.07)}
+  td.num,th.num{text-align:right}
+  .tag{font-family:var(--font-mono);font-size:.66rem;padding:1px 6px;border-radius:5px;font-weight:500;white-space:nowrap}
+  .tV{background:var(--green-dim);color:var(--green)}
+  .tS{background:var(--amber-dim);color:var(--amber)}
+  .tD{background:var(--navy-dim);color:var(--navy)}
+  .tA{background:var(--gold-dim);color:var(--gold)}
+  .tN{background:var(--red-dim);color:var(--red)}
+  .rate{font-family:var(--font-mono);font-size:.72rem;font-weight:500;padding:3px 10px;border-radius:6px;letter-spacing:.06em}
+  .rGREEN{background:var(--green-dim);color:var(--green)}
+  .rAMBER{background:var(--amber-dim);color:var(--amber)}
+  .rRED{background:var(--red-dim);color:var(--red)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:720px){.grid2{grid-template-columns:1fr}}
+  .callout{border-left:3px solid var(--gold);background:var(--gold-dim);border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;font-size:.92rem}
+  .callout.red{border-color:var(--red);background:var(--red-dim)}
+  .callout.navy{border-color:var(--navy);background:var(--navy-dim)}
+  p{margin:0 0 13px}
+  ul{margin:0 0 13px;padding-left:20px}
+  li{margin-bottom:6px}
+  .lead{font-size:1.06rem;color:var(--text);max-width:70ch}
+  .pill{display:inline-block;font-family:var(--font-mono);font-size:.7rem;padding:2px 9px;border-radius:999px;background:var(--navy-dim);color:var(--navy);margin:0 6px 6px 0}
+  footer{border-top:1px solid var(--border);margin-top:50px;padding-top:22px;font-size:.8rem;color:var(--text-dim)}
+  .flagrow{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border)}
+  .flagrow:last-child{border-bottom:none}
+  .sev{font-family:var(--font-mono);font-size:.68rem;padding:2px 8px;border-radius:5px;white-space:nowrap;flex:none;margin-top:3px}
+  .h{background:var(--red-dim);color:var(--red)}.m{background:var(--amber-dim);color:var(--amber)}.l{background:var(--navy-dim);color:var(--navy)}
+  .fadein{animation:fadeUp .6s ease both}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion: reduce){.fadein{animation:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero fadein">
+    <div class="kicker">VERIDIAN · Buy-side Equity Research</div>
+    <h1>Waaree Energies Ltd</h1>
+    <div class="ticker">NSE: WAAREEENER &nbsp;·&nbsp; BSE: 544277 &nbsp;·&nbsp; ISIN INE377N01017 &nbsp;·&nbsp; Sector: Capital Goods – Electrical Equipment (Solar)</div>
+    <div style="margin-top:14px"><span class="pill">Mode: NEW IDEA</span><span class="pill">Horizon: 3 years</span><span class="pill">Position size: 0</span><span class="pill">Basis: Consolidated</span><span class="pill">Run date: 13 Oct 2026</span></div>
+  </header>
+
+  <!-- VERDICT -->
+  <section class="fadein">
+    <div class="hero-card">
+      <div class="section-label">Verdict Box</div>
+      <span class="verdict">● PASS</span> <span class="sub" style="margin-left:8px">near-miss Watch — revisit triggers below</span>
+      <p class="lead" style="margin-top:18px"><strong>Variant-perception thesis:</strong> There is <strong>no evidence-backed variant</strong>. The market is genuinely split — bulls point to a ₹61,500 cr order book, 25.8 GW scale and non-Chinese positioning; bears point to margin compression, US tariff exposure and cash burn. Both cases are widely articulated by covering analysts (targets ₹2,395–4,400), so neither is mispricing.</p>
+      <div class="callout navy"><strong>Catalyst &amp; timing:</strong> Q2 FY27 results <strong>~29 Oct 2026</strong> (within 30 days) and any US CBP/CIT duty quantum. <em>Model and price may be stale around the results season; recheck after the results.</em></div>
+      <div class="metrics">
+        <div class="metric"><div class="lbl">PW value / share</div><div class="val">₹3,080</div><div class="note">+31% over 3 yrs · ~9% IRR</div></div>
+        <div class="metric"><div class="lbl">Bull</div><div class="val">₹5,000</div><div class="note">+113%</div></div>
+        <div class="metric"><div class="lbl">Base</div><div class="val">₹3,230</div><div class="note">+38%</div></div>
+        <div class="metric"><div class="lbl">Bear</div><div class="val">₹1,260</div><div class="note">−46%</div></div>
+        <div class="metric"><div class="lbl">P(loss &gt;30%)</div><div class="val">~30%</div><div class="note">bear weight</div></div>
+        <div class="metric"><div class="lbl">Data confidence</div><div class="val" style="color:var(--red)">LOW</div><div class="note">3 of 8 critical figs single-source</div></div>
+      </div>
+      <p class="sub" style="margin-top:16px;font-size:.84rem">Probabilities bull/base/bear = 25 / 45 / 30 (anchored below). Position size 0; liquidity not a constraint (₹100 cr notional ≈ 1.2 trading days at 20% of ADV). Bolded figures are estimates/derived, not verified.</p>
+    </div>
+  </section>
+
+  <!-- RESEARCH LOG -->
+  <section class="fadein">
+    <div class="section-label">Step 0 · Research Log</div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Item</th><th>Document</th><th>Date</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Company basics / price</td><td>NSE quote; Screener</td><td>13-Oct-26</td><td>Found</td></tr>
+        <tr><td>FY26 annual report (integrated)</td><td>Waaree Integrated AR 2025-26</td><td>24-Sep-26</td><td>Partial</td></tr>
+        <tr><td>FY25 annual report</td><td>Waaree AR 2024-25</td><td>Sep-25</td><td>Found</td></tr>
+        <tr><td>Q4/FY26 results + deck</td><td>BSE Reg-30 presentation</td><td>30-Apr-26</td><td>Found</td></tr>
+        <tr><td>Q1 FY27 results + press release</td><td>BSE/NSE Reg-30</td><td>29-Jul-26</td><td>Found</td></tr>
+        <tr><td>Concalls (Q2FY26, Q4FY26, Q1FY27)</td><td>Transcripts</td><td>Oct-25 / Apr-26 / Jul-26</td><td>Partial</td></tr>
+        <tr><td>Shareholding pattern</td><td>NSE/BSE Reg-31</td><td>30-Jun-26</td><td>Found</td></tr>
+        <tr><td>Rating rationales</td><td>CARE AA- ; CARE A+ (Mar-25)</td><td>05-Feb-26 / 12-Mar-25</td><td>Found</td></tr>
+        <tr><td>Governance / regulatory</td><td>SEBI exemption; BSE GST order; ICC arbitration; CBP EAPA news</td><td>Jul-26 / Apr-26 / Mar-26 / Jun-26</td><td>Found</td></tr>
+        <tr><td>10-yr financials</td><td>Screener consolidated (aggregator)</td><td>13-Oct-26</td><td>Found</td></tr>
+        <tr><td>Market structure</td><td>NSE delivery/volume; MF holdings</td><td>12-Oct-26</td><td>Found</td></tr>
+        <tr><td>Market view / consensus</td><td>14–29 analysts; broker targets</td><td>Oct-26</td><td>Found</td></tr>
+        <tr><td>Order book / execution</td><td>Q1FY27 concall + deck</td><td>28-Jul-26</td><td>Found</td></tr>
+        <tr><td>Industry / policy</td><td>CARE rationale (ALMM-I/II, BCD, DCR)</td><td>05-Feb-26</td><td>Found</td></tr>
+      </tbody>
+    </table></div>
+    <p class="sub" style="margin-top:10px">Not found / blocked: FY26 annual report <em>notes to accounts</em> (receivables ageing, RPT note numbers, CARO annexure) — PDF returned only front matter. Listed under Open Questions.</p>
+  </section>
+
+  <!-- DATA PACK -->
+  <section class="fadein">
+    <div class="section-label">Step 0.5 · Data Pack (Consolidated, ₹ cr)</div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Row</th><th class="num">FY20</th><th class="num">FY21</th><th class="num">FY22</th><th class="num">FY23</th><th class="num">FY24</th><th class="num">FY25</th><th class="num">FY26</th><th>Tag</th></tr></thead>
+      <tbody>
+        <tr><td>Sales</td><td class="num">1,996</td><td class="num">1,953</td><td class="num">2,854</td><td class="num">6,751</td><td class="num">11,398</td><td class="num">14,444</td><td class="num">26,537</td><td><span class="tag tV">V</span>/<span class="tag tS">S</span></td></tr>
+        <tr><td>Operating EBITDA</td><td class="num">93</td><td class="num">85</td><td class="num">106</td><td class="num">836</td><td class="num">1,574</td><td class="num">2,722</td><td class="num">5,909</td><td><span class="tag tV">V</span>/<span class="tag tS">S</span></td></tr>
+        <tr><td>OPM %</td><td class="num">4.7</td><td class="num">4.3</td><td class="num">3.7</td><td class="num">12</td><td class="num">14</td><td class="num">19</td><td class="num">22</td><td><span class="tag tD">D</span></td></tr>
+        <tr><td>PAT</td><td class="num">39</td><td class="num">48</td><td class="num">80</td><td class="num">500</td><td class="num">1,274</td><td class="num">1,928</td><td class="num">3,884</td><td><span class="tag tV">V</span>/<span class="tag tS">S</span></td></tr>
+        <tr><td>EPS (₹)</td><td class="num">2.12</td><td class="num">2.50</td><td class="num">3.84</td><td class="num">24.49</td><td class="num">62.76</td><td class="num">65.00</td><td class="num">129.02</td><td><span class="tag tS">S</span></td></tr>
+        <tr><td>CFO</td><td class="num">83</td><td class="num">67</td><td class="num">698</td><td class="num">1,560</td><td class="num">2,305</td><td class="num">3,158</td><td class="num">1,627</td><td><span class="tag tV">V</span>/<span class="tag tS">S</span></td></tr>
+        <tr><td>FCF</td><td class="num">32</td><td class="num">−35</td><td class="num">202</td><td class="num">698</td><td class="num">968</td><td class="num">−114</td><td class="num">−3,209</td><td><span class="tag tD">D</span></td></tr>
+        <tr><td>Borrowings</td><td class="num">157</td><td class="num">340</td><td class="num">363</td><td class="num">320</td><td class="num">553</td><td class="num">1,199</td><td class="num">3,213</td><td><span class="tag tS">S</span></td></tr>
+        <tr><td>Net worth</td><td class="num">298</td><td class="num">345</td><td class="num">428</td><td class="num">1,838</td><td class="num">4,088</td><td class="num">9,479</td><td class="num">14,438</td><td><span class="tag tS">S</span></td></tr>
+        <tr><td>Debtor days</td><td class="num">26</td><td class="num">22</td><td class="num">12</td><td class="num">17</td><td class="num">31</td><td class="num">27</td><td class="num">34</td><td><span class="tag tS">S</span></td></tr>
+        <tr><td>Inventory days</td><td class="num">54</td><td class="num">83</td><td class="num">85</td><td class="num">192</td><td class="num">108</td><td class="num">96</td><td class="num">129</td><td><span class="tag tS">S</span></td></tr>
+        <tr><td>ROCE %</td><td class="num">—</td><td class="num">16</td><td class="num">21</td><td class="num">52</td><td class="num">44</td><td class="num">35</td><td class="num">38</td><td><span class="tag tS">S</span></td></tr>
+        <tr><td>Promoter %</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">64.31</td><td class="num">64.31</td><td class="num">64.12</td><td><span class="tag tV">V</span></td></tr>
+        <tr><td>Pledge %</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td><span class="tag tV">V</span></td></tr>
+        <tr><td>Order book (₹ cr)</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">~47,000</td><td class="num">~53,000</td><td><span class="tag tS">S</span></td></tr>
+        <tr><td>Current price (₹)</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">2,345</td><td><span class="tag tV">V</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="callout"><strong>Definitions note:</strong> the company reports <em>Operating EBITDA</em> and <em>Total EBITDA</em> separately. FY26: Operating ₹5,909 cr; Total ₹6,617 cr. This report uses Operating EBITDA. FY25 Operating ₹2,722 cr vs headline "₹3,119–3,123 cr". <strong>Total-debt discrepancy:</strong> FY26 borrowings ₹3,213 cr (Screener) / ₹2,491 cr (MarketsMojo) / ₹3,692 cr incl. leases (Livemint); D/E 0.21x and net-cash per AR.</div>
+  </section>
+
+  <!-- SCREEN -->
+  <section class="fadein">
+    <div class="section-label">Stage 1 · Quick Screen</div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Test</th><th>Threshold</th><th>Actual</th><th>Tag</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td>Promoter pledge</td><td>FAIL &gt;20% or rising 3 qtrs</td><td>0.00%, flat</td><td><span class="tag tV">V</span></td><td><span class="rate rGREEN">PASS</span></td></tr>
+        <tr><td>Cumulative 5-yr CFO/PAT</td><td>FAIL &lt;0.7</td><td>9,348 / 7,666 = 1.22x</td><td><span class="tag tD">D</span></td><td><span class="rate rGREEN">PASS</span></td></tr>
+        <tr><td>Interest cover</td><td>FAIL &lt;2.5x</td><td>4,919 / 280 = 17.6x</td><td><span class="tag tD">D</span></td><td><span class="rate rGREEN">PASS</span></td></tr>
+        <tr><td>ROCE</td><td>FAIL &lt;12% most of 5 yrs</td><td>21 / 52 / 44 / 35 / 38%</td><td><span class="tag tS">S</span></td><td><span class="rate rGREEN">PASS</span></td></tr>
+        <tr><td>Debt / equity</td><td>FAIL &gt;1.5x</td><td>0.21x (net cash)</td><td><span class="tag tV">V</span></td><td><span class="rate rGREEN">PASS</span></td></tr>
+        <tr><td>Liquidity</td><td>FAIL &gt;10 days</td><td>ADV ~0.5–1.8m sh; size 0</td><td><span class="tag tV">V</span></td><td><span class="rate rGREEN">PASS</span></td></tr>
+        <tr><td>Governance</td><td>FAIL on auditor/qualification/SEBI/RPT</td><td>None literal — but CBP finding + CEO/CFO/CPO exits</td><td><span class="tag tS">S</span></td><td><span class="rate rAMBER">PASS*</span></td></tr>
+      </tbody>
+    </table></div>
+    <p class="sub" style="margin-top:10px">* All seven pass; CBP matter and CFO collapse carried forward as the two verdict-deciding issues.</p>
+  </section>
+
+  <!-- BUSINESS -->
+  <section class="fadein">
+    <div class="section-label">2 · Business &amp; Moat</div>
+    <p>Waaree manufactures solar PV modules — India's largest and, by its own claim, the world's largest non-Chinese module maker at ~25.8 GW — sold through utility/IPP/C&amp;I (39.7% of Q1 FY27 revenue), retail/B2C (30.2%), overseas exports (21.2%) and EPC (8.9%). It earns a manufacturing margin on modules, increasingly on self-made cells (5.4 GW → 15.4 GW), and is expanding into BESS, inverters, transformers, T&amp;D, solar glass and green hydrogen under "Waaree 2.0". The moat is scale plus DCR/ALMM qualification — real, but policy-rented and capital-intensive, and margins just compressed 800+ bps. <span class="rate rAMBER">AMBER</span></p>
+  </section>
+
+  <section class="fadein">
+    <div class="section-label">2A · Product &amp; Portfolio</div>
+    <p>Mono PERC, TOPCon (G12/G12R), HJT (to 730 Wp), bifacial/flexible modules; cells; EPC/O&amp;M; inverters (4.15 GW); transformers; BESS (5.15 GWh); electrolysers. Modules ≈93% of Q1 FY27 revenue; EPC ~8.9%. Realisation guided ~$0.24–0.25/W (long-range DCR ~$0.21–0.22/W). <strong>Module EBIT collapsed to 9.3% in Q1 FY27 from 14.0% QoQ.</strong> Top-5 customers ~27%, top-10 ~37%. Single product-specific risk: the module is a policy-priced commodity; durable margin lives in cells Waaree has barely begun to make at scale. <span class="rate rAMBER">AMBER</span></p>
+  </section>
+
+  <section class="fadein">
+    <div class="section-label">2B · Suppliers &amp; Customers</div>
+    <p>Customer names not disclosed; ~35 GW cumulative deployed; ~40% India / 36% US-domestic / 24% India-exports. Wafer and cell ≈50% of raw-material cost, largely imported — the central input-price/FX exposure (mitigant: Oman polysilicon stake). Related-party route: Waaree Semicon acquired by a WOS <em>from the promoter company</em> (disclosed, AC-approved). Largest counterparty risk: the US channel, where the CBP matter sits. <span class="rate rAMBER">AMBER</span></p>
+  </section>
+
+  <section class="fadein">
+    <div class="section-label">3 · Industry &amp; Cycle</div>
+    <p>India module capacity roughly doubled to ~74 GW in FY25 while policy steers demand to local supply (BCD, ALMM-I, ALMM-II for cells from Jun-26). The profit pool is shifting upstream to cells/wafers. FY26's 22.3% operating margin is a cyclical high vs a 4–5% trough; Q1 FY27's 18.15% is the first compression. Mid-cycle operating margin is more plausibly ~17–19%. <span class="rate rAMBER">AMBER</span></p>
+  </section>
+
+  <!-- GOVERNANCE -->
+  <section class="fadein">
+    <div class="section-label">4 · Governance Scorecard</div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Item</th><th>Evidence</th><th>Read</th></tr></thead>
+      <tbody>
+        <tr><td>Promoter holding (8 qtrs)</td><td>64.31 → 64.12%</td><td>Stable</td></tr>
+        <tr><td>Pledge</td><td>Nil across 8 quarters</td><td>Clean</td></tr>
+        <tr><td>Related party</td><td>Waaree Semicon from promoter co.</td><td>Watch</td></tr>
+        <tr><td>Auditor</td><td>S R B C &amp; Co LLP; no resignation/qualification</td><td>Clean</td></tr>
+        <tr><td>Contingent liabilities</td><td>~₹619 cr; Enel ICC arbitration (unquantified)</td><td>Moderate</td></tr>
+        <tr><td>Regulatory</td><td>US CBP final evasion determination (Jun-26), "material and false" origin finding</td><td style="color:var(--red)"><strong>Material</strong></td></tr>
+        <tr><td>Management stability</td><td>CEO + CFO exited same day (20-Mar-26); CPO exited (19-Jun-26)</td><td style="color:var(--red)"><strong>Material churn</strong></td></tr>
+        <tr><td>Guidance vs delivery</td><td>FY26 beat (₹6,617 cr vs ₹5,500–6,000 guided)</td><td>Strong</td></tr>
+      </tbody>
+    </table></div>
+    <p class="sub" style="margin-top:10px">Clean on the four formal FAIL triggers; AMBER sitting on the RED line. Flips to RED (→ verdict Pass) if the CBP appeal fails and duties are assessed. <span class="rate rAMBER">AMBER (borderline)</span></p>
+  </section>
+
+  <!-- FINANCIAL QUALITY -->
+  <section class="fadein">
+    <div class="section-label">5 · Financial Quality</div>
+    <p>Excellent returns and leverage (ROCE 38%, D/E 0.21x, net cash), but FY26 broke cash conversion: CFO/PAT fell to <strong>0.42</strong>, FCF <strong>−₹3,209 cr</strong>, inventory days 96→129, cash-conversion cycle 38→84 days. Growth is consuming cash. <span class="rate rAMBER">AMBER</span></p>
+  </section>
+
+  <!-- FORENSIC -->
+  <section class="fadein">
+    <div class="section-label">6 · Forensic Accounting Pass</div>
+    <div class="grid2">
+      <div class="card">
+        <h3>Beneish M-score (FY26 vs FY25)</h3>
+        <p class="mono" style="font-size:.82rem">M = −4.84 + 0.92(1.26) + 0.528(1.18) + 0.404(1.00) + 0.892(1.84) + 0.115(0.75) − 0.172(1.16) + 4.679(0.075) − 0.327(0.99)</p>
+        <p style="font-size:1.05rem;font-weight:600;margin:0">= −1.10 &nbsp;<span class="tag tS">D</span></p>
+        <p class="sub" style="margin-top:6px">Above the −1.78 threshold → possible-manipulation flag, but driven almost entirely by SGI (1.84 sales growth) and TATA. Screening signal only.</p>
+      </div>
+      <div class="card">
+        <h3>Altman Z-score (manufacturer)</h3>
+        <p class="mono" style="font-size:.82rem">Z = 1.2(.162) + 1.4(.470) + 3.3(.163) + 0.6(4.30) + 1.0(.881)</p>
+        <p style="font-size:1.05rem;font-weight:600;margin:0">= 4.85 &nbsp;<span class="tag tS">D</span></p>
+        <p class="sub" style="margin-top:6px">Deep safe zone (&gt;2.99). Cash-conversion cycle 5-yr: 13→6→14→66→55→38→<strong>84</strong> days.</p>
+      </div>
+    </div>
+    <div style="margin-top:16px">
+      <div class="flagrow"><span class="sev h">HIGH</span><span>US CBP "material and false" country-of-origin finding</span></div>
+      <div class="flagrow"><span class="sev h">MED-HIGH</span><span>CFO/PAT collapse to 0.42; FCF −₹3,209 cr</span></div>
+      <div class="flagrow"><span class="sev m">MED</span><span>CCC 38→84 days; inventory 96→129 days; Enel arbitration unquantified</span></div>
+      <div class="flagrow"><span class="sev l">LOW-MED</span><span>Beneish above threshold (growth-driven)</span></div>
+    </div>
+    <p class="sub" style="margin-top:10px"><span class="rate rAMBER">AMBER</span></p>
+  </section>
+
+  <!-- INDUSTRIAL DEEP DIVE -->
+  <section class="fadein">
+    <div class="section-label">7 · Industrial Deep-Dive</div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Metric</th><th>Value</th><th>Tag</th></tr></thead>
+      <tbody>
+        <tr><td>Order book / TTM revenue</td><td>₹61,500 cr / ₹30,043 cr = ~2.05 yrs coverage</td><td><span class="tag tD">D</span></td></tr>
+        <tr><td>Book-to-bill (Q1 FY27)</td><td>₹16,000 cr inflow / ₹7,932 cr rev = 2.0x</td><td><span class="tag tD">D</span></td></tr>
+        <tr><td>Customer concentration</td><td>Top-5 ~27%, top-10 ~37% (falling)</td><td><span class="tag tS">S</span></td></tr>
+        <tr><td>Capacity utilisation</td><td>India modules ~50%; cells ~62%; US ~59%</td><td><span class="tag tS">S</span></td></tr>
+        <tr><td>Capex-to-capacity</td><td>~₹30,000 cr committed; ~₹9,500 cr deployed (Jun-26)</td><td><span class="tag tS">S</span></td></tr>
+        <tr><td>Realisation timeline</td><td>Not disclosed → <strong>[N]</strong></td><td><span class="tag tN">N</span></td></tr>
+      </tbody>
+    </table></div>
+    <p class="sub" style="margin-top:10px">Firm vs pipeline: the "100+ GW pipeline" is separate and not contracted. Realisation risk triggers: US customs clearance/tariff treatment, DCR qualification timing, client capex. <span class="rate rAMBER">AMBER</span></p>
+  </section>
+
+  <!-- PEERS -->
+  <section class="fadein">
+    <div class="section-label">8 · Peer Comparison (FY26)</div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Metric</th><th class="num">Waaree</th><th class="num">Premier Energies</th><th class="num">Emmvee</th><th class="num">Vikram Solar</th><th class="num">Saatvik</th></tr></thead>
+      <tbody>
+        <tr><td>Revenue (₹ cr)</td><td class="num">26,537</td><td class="num">7,824</td><td class="num">5,050</td><td class="num">4,861</td><td class="num">4,548</td></tr>
+        <tr><td>PAT (₹ cr)</td><td class="num">3,884</td><td class="num">1,510</td><td class="num">1,082</td><td class="num">470</td><td class="num">357</td></tr>
+        <tr><td>Net margin %</td><td class="num">13.0</td><td class="num">~19</td><td class="num">~21</td><td class="num">~9.7</td><td class="num">~7.9</td></tr>
+        <tr><td>P/E (x)</td><td class="num">17.7</td><td class="num">~16–20</td><td class="num">~16</td><td class="num">~14</td><td class="num">~20</td></tr>
+        <tr><td>EV/EBITDA (x)</td><td class="num">~10</td><td class="num">~10</td><td class="num">~10</td><td class="num">~5</td><td class="num">—</td></tr>
+        <tr><td>Order book</td><td class="num">₹61,500 cr</td><td class="num">₹14,010 cr</td><td class="num">9.4 GW</td><td class="num">10.3 GW</td><td class="num">3.5 GW</td></tr>
+      </tbody>
+    </table></div>
+    <p class="sub" style="margin-top:10px">Peers chosen on overlapping module/cell business and DCR exposure. Waaree leads on scale; Premier and Emmvee earn higher net margins because they are further along in cells/integration. <span class="rate rAMBER">AMBER</span></p>
+  </section>
+
+  <!-- VARIANT -->
+  <section class="fadein">
+    <div class="section-label">9 · Variant Perception Evidence</div>
+    <p>Coverage is broad (14–29 analysts), consensus <strong>Buy</strong>, average target ~₹3,296–3,605 (range ₹2,395–4,400) — but bimodal: several Strong Buys alongside persistent Sells (Jefferies, Ambit, Kotak). Stock −30% over 1 year, near its 52-week low, P/E ~17.7x. FIIs added (0.70%→8.57%); MFs trimmed slightly. The bear case (margin, US tariff, cash burn, churn) and the bull case (order book, integration, non-Chinese) are both widely known. No evidence-backed difference from consensus was found.</p>
+    <div class="callout red"><strong>NO CLEAR VARIANT PERCEPTION</strong> — a protocol hard stop. <span class="rate rRED">RED</span></div>
+  </section>
+
+  <!-- FORWARD MODEL -->
+  <section class="fadein">
+    <div class="section-label">10 · Forward Model</div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>₹ cr</th><th class="num">FY26A</th><th class="num">FY27E</th><th class="num">FY28E</th><th class="num">FY29E</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Base (45%)</strong> — Revenue</td><td class="num">26,537</td><td class="num">34,000</td><td class="num">40,000</td><td class="num">46,000</td></tr>
+        <tr><td>Op EBITDA / margin</td><td class="num">5,909 / 22.3%</td><td class="num">7,310 / 21.5%</td><td class="num">8,400 / 21.0%</td><td class="num">9,430 / 20.5%</td></tr>
+        <tr><td>PAT / EPS (₹)</td><td class="num">3,884 / 129</td><td class="num">4,570 / 159</td><td class="num">5,190 / 180</td><td class="num">5,800 / 202</td></tr>
+        <tr><td><strong>Bull (25%)</strong> — Op EBITDA / EPS</td><td class="num">5,909 / 129</td><td class="num">7,700 / 169</td><td class="num">10,000 / 205</td><td class="num">12,500 / 250</td></tr>
+        <tr><td><strong>Bear (30%)</strong> — Op EBITDA / EPS</td><td class="num">5,909 / 129</td><td class="num">6,600 / 122</td><td class="num">6,400 / 111</td><td class="num">6,300 / 105</td></tr>
+      </tbody>
+    </table></div>
+    <div class="callout"><strong>Probability anchors:</strong> Base 45% — management beat FY26 guidance and the book covers ~2.05 yrs. Bull 25% — cell integration + US ramp re-expand margins; book-to-bill 2.0x. Bear 30% — Q1 margin −820 bps, module EBIT 9.3%, the company's own FY20–22 record shows 4–5% margins, and US exposure is binary.</div>
+    <h3 style="margin-top:20px">Sensitivity (value/share = exit P/E × FY29 EPS)</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Exit P/E</th><th class="num">EPS ₹105</th><th class="num">EPS ₹202</th><th class="num">EPS ₹250</th></tr></thead>
+      <tbody>
+        <tr><td>12x</td><td class="num">₹1,260</td><td class="num">₹2,424</td><td class="num">₹3,000</td></tr>
+        <tr><td>16x</td><td class="num">₹1,680</td><td class="num">₹3,232</td><td class="num">₹4,000</td></tr>
+        <tr><td>20x</td><td class="num">₹2,100</td><td class="num">₹4,040</td><td class="num">₹5,000</td></tr>
+      </tbody>
+    </table></div>
+    <p class="sub" style="margin-top:10px"><strong>Reverse DCF:</strong> with capex exceeding CFO, FCF is negative (−₹3,209 cr), so a cash-flow DCF is not meaningful; on the multiple-implied method, ₹2,345 pays 17.7x TTM EPS / 10.8x EV/Op-EBITDA, implying only ~12–13% long-run EPS growth at a 12% cost of equity — undemanding but not a gift. <span class="rate rAMBER">AMBER</span></p>
+  </section>
+
+  <!-- VALUATION -->
+  <section class="fadein">
+    <div class="section-label">11 · Valuation</div>
+    <p>P/E 17.7x (vs a 30–90x FY25 band; peers 14–20x); EV/Op-EBITDA ~10.8x; P/B 4.67x (BV ₹502). <strong>Normalised mid-cycle:</strong> ~18% operating margin on FY29 revenue ₹46,000 cr → EBITDA ₹8,280 cr → PAT ~₹5,000 cr → EPS ~₹174 → at 16x = <strong>~₹2,780</strong> — roughly fair value. Asymmetry bull +113% vs bear −46% ≈ 2.45:1 (passes ≥2x test), but the PW return is only ~+31% over three years. <span class="rate rAMBER">AMBER</span></p>
+  </section>
+
+  <!-- MACRO -->
+  <section class="fadein">
+    <div class="section-label">12 · Macro &amp; Policy Dependence</div>
+    <p>Material exposures: FX (imported wafers/cells), tariffs (US AD/CVD + CBP; 36% of the book is US-domestic), commodity inputs (metal, glass, polysilicon), government capex (ALMM-I/II, BCD 40%/25%, DCR, PM-Surya Ghar, PM-KUSUM). Roughly <strong>50–60% of the thesis breaks</strong> if policy turns — both the domestic margin umbrella and the US non-Chinese premium are policy-rented. <span class="rate rRED">RED</span></p>
+  </section>
+
+  <!-- LIQUIDITY -->
+  <section class="fadein">
+    <div class="section-label">13 · Market Structure &amp; Liquidity</div>
+    <p>ADV ~0.5–1.8m shares; delivery 43–49% (above its 20-day average); free float ~35.9%; a ₹100 cr position ≈ 1.2 trading days at 20% of ADV. FII 1.40%→8.57% over 8 quarters (steady accumulation); DII 2.70%→4.08%; MF 1.44%→2.81%. No bulk/block deals 15-Jul→12-Oct-26. <span class="rate rGREEN">GREEN</span></p>
+  </section>
+
+  <!-- PRE-MORTEM -->
+  <section class="fadein">
+    <div class="section-label">14 · Pre-Mortem &amp; Kill Criteria</div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>#</th><th>Reason (30%+ loss in 2 yrs)</th><th class="num">Prob.</th><th>Early warning</th><th>Sell trigger</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>US AD/CVD + CBP duties crystallise</td><td class="num">35%</td><td>CBP/CIT adverse order</td><td>Final duty order above provisions</td></tr>
+        <tr><td>2</td><td>Module margin normalises; cell integration late</td><td class="num">30%</td><td>Op margin &lt;17% for 2 qtrs</td><td>Two consecutive quarters &lt;17%</td></tr>
+        <tr><td>3</td><td>Working-capital burn forces discounted raise</td><td class="num">20%</td><td>CFO/PAT &lt;0.6; net debt positive</td><td>QIP at a discount</td></tr>
+        <tr><td>4</td><td>DCR/ALMM dilution or module oversupply</td><td class="num">25%</td><td>ALMM relaxation; BCD cut</td><td>Policy removes the domestic umbrella</td></tr>
+        <tr><td>5</td><td>Governance event escalates</td><td class="num">15%</td><td>Further C-suite exits</td><td>Second material regulatory action</td></tr>
+      </tbody>
+    </table></div>
+    <p class="sub" style="margin-top:10px">Thesis break (1–3) vs price volatility: sell on a thesis break, not on price alone. <span class="rate rRED">RED</span></p>
+  </section>
+
+  <!-- RED TEAM -->
+  <section class="fadein">
+    <div class="section-label">15 · Red-Team Short Report</div>
+    <div class="card">
+      <p>Waaree is a commodity module-maker dressed as an integrated platform, and the cash is leaving the building. <strong>Earnings quality:</strong> CFO/PAT collapsed from 1.6x (FY25) to <strong>0.42x (FY26)</strong>; FCF went from −₹114 cr to <strong>−₹3,209 cr</strong>; inventory days 96→129; cash-conversion cycle 38→84. Profit is being manufactured on the accrual line while cash is absorbed by working capital. <strong>Margins are rolling over:</strong> Q1 FY27 operating margin −820 bps YoY to 18.15%, module EBIT halved to 9.3% from 14.0% QoQ. <strong>The US profit pool turned hostile:</strong> a June 2026 final evasion determination (EAPA 8163) citing a "four-year history of reporting the wrong country of origin" it called "material and false," with cash deposits up to 271.28% — and an AD/CVD case on Indian imports still pending. <strong>The boardroom is emptying:</strong> CEO and CFO both left 20 Mar 2026; the CPO in June — three senior exits in six months. <strong>Not cheap on persistent numbers:</strong> 17.7x on peak-cycle FY26 earnings; only ~₹2,780 on normalised mid-cycle earnings.</p>
+      <p><strong>What would make the short fail:</strong> the CBP appeal succeeds; cell integration lifts margins back above 20%; the order book converts cleanly; FIIs keep accumulating.</p>
+      <p><strong>Fair assessment:</strong> the cash-conversion and margin arguments hold up on the numbers — strongest. The US-trade argument is real but contested (CBP confirmed no Chinese cells in verified shipments and declined a blanket adverse-inference ruling). The governance argument is serious but not a formal red flag. A short would likely be <em>right on the facts, wrong on the timing</em>.</p>
+    </div>
+  </section>
+
+  <!-- MONITORING -->
+  <section class="fadein">
+    <div class="section-label">16 · Monitoring Plan &amp; Decision Journal</div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>KPI</th><th>Model expectation</th><th>Watch if</th></tr></thead>
+      <tbody>
+        <tr><td>Operating EBITDA margin</td><td>FY27 ~21.5%</td><td>&lt;17% for 2 quarters</td></tr>
+        <tr><td>Module realisation ($/W)</td><td>$0.24–0.25</td><td>&lt;$0.21</td></tr>
+        <tr><td>Book-to-bill</td><td>≥1.2x</td><td>&lt;1.0x</td></tr>
+        <tr><td>CFO/PAT</td><td>→ ≥1.0 by FY28</td><td>&lt;0.6</td></tr>
+        <tr><td>Net debt / (net cash)</td><td>stays net cash</td><td>net debt/EBITDA &gt;0.5x</td></tr>
+        <tr><td>Cell production (GW/qtr)</td><td>1.2 (Q2), 1.5 (Q3)</td><td>stalled</td></tr>
+      </tbody>
+    </table></div>
+    <p class="sub" style="margin-top:10px"><strong>Next results: ~29 Oct 2026.</strong> Journal — <em>Buy reason:</em> scale-leading, net-cash, 38%-ROCE manufacturer at ~10x EV/EBITDA with a ₹61,500 cr book. <em>Expected:</em> ~31% PW upside over 3 yrs. <em>Proves me wrong:</em> margin &lt;17% for two quarters, net debt positive, or adverse US duty order. <em>Review:</em> after Q2 FY27.</p>
+  </section>
+
+  <!-- SOURCES -->
+  <section class="fadein">
+    <div class="section-label">17 · Sources, Contradictions &amp; Open Questions</div>
+    <h3>Contradictions</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Item</th><th>Value A</th><th>Value B</th><th>Resolution</th></tr></thead>
+      <tbody>
+        <tr><td>FY25 EBITDA</td><td>₹3,119–3,123 cr (headline)</td><td>₹2,722 cr (operating, deck)</td><td>Definitional; use operating</td></tr>
+        <tr><td>FY26 total debt</td><td>₹3,213 cr (Screener)</td><td>₹2,491 / ₹3,692 cr</td><td>Definitional; D/E 0.21x</td></tr>
+        <tr><td>Receivable days FY26</td><td>34 (Screener)</td><td>37.5 / 24.4</td><td>Methodology; ~34 used</td></tr>
+        <tr><td>CBP finding</td><td>Company: "no material impact"</td><td>CBP: "material and false"</td><td style="color:var(--red)">Unresolved</td></tr>
+      </tbody>
+    </table></div>
+    <h3 style="margin-top:20px">Documents needed (Blocked-Source Fallback)</h3>
+    <p>FY26 annual report <strong>Notes to Accounts</strong> (receivables ageing/provisions, related-party note numbers, contingent-liability note, CARO annexure, interest capitalisation) — the PDF returned only front matter.</p>
+    <h3 style="margin-top:20px">Channel checks needed</h3>
+    <ul>
+      <li><strong>US module customers:</strong> paused orders after CBP? traceability now required? fallback supplier?</li>
+      <li><strong>Suppliers:</strong> wafer/cell price path for FY27? single-source dependence? DCR-qualified cells?</li>
+      <li><strong>Competitors (Premier/Emmvee):</strong> how fast is integration lifting margins? winning DCR share? module pricing?</li>
+      <li><strong>Ex-employees:</strong> why did CEO/CFO/CPO leave? internal concern on US origin reporting? cell-ramp maturity?</li>
+    </ul>
+    <p class="sub"><strong>Every [N] / unverified item:</strong> FY26 notes to accounts; firm-vs-pipeline split of the order book; realisation timeline; segment capital employed/ROCE; customer names; exact US duty quantum.</p>
+  </section>
+
+  <!-- STAGE 3 -->
+  <section class="fadein">
+    <div class="section-label">Stage 3 · Final Audit — 15 Decision-Critical Figures</div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Figure</th><th>Value in report</th><th>Source &amp; location</th><th>Second source</th><th>Tag</th><th>Match</th></tr></thead>
+      <tbody>
+        <tr><td>Latest PAT (FY26)</td><td>3,884.15 cr</td><td>FY26 press release, P&amp;L</td><td>AR; Screener</td><td><span class="tag tV">V</span></td><td>✔</td></tr>
+        <tr><td>Total debt (FY26)</td><td>~3,213 cr (borrowings)</td><td>Screener balance sheet</td><td>MarketsMojo 2,491 / Livemint 3,692</td><td><span class="tag tS">S</span></td><td>Range</td></tr>
+        <tr><td>CFO (FY26)</td><td>1,626.95 cr</td><td>Q4FY26 deck, cash-flow slide</td><td>Saur Energy; Screener</td><td><span class="tag tV">V</span></td><td>✔</td></tr>
+        <tr><td>Promoter holding</td><td>64.12%</td><td>SHP 30-Jun-26</td><td>Trendlyne; Screener</td><td><span class="tag tV">V</span></td><td>✔</td></tr>
+        <tr><td>Pledge %</td><td>0.00%</td><td>SHP 30-Jun-26</td><td>Trendlyne; MarketsMojo</td><td><span class="tag tV">V</span></td><td>✔</td></tr>
+        <tr><td>Order book</td><td>₹61,500 cr</td><td>Q1 FY27 press release</td><td>Q1 FY27 concall</td><td><span class="tag tS">S</span></td><td>✔</td></tr>
+        <tr><td>Receivable days (FY26)</td><td>~34</td><td>Screener ratios</td><td>ET 37.5 / VR 24.4</td><td><span class="tag tS">S</span></td><td>Range</td></tr>
+        <tr><td>Current price</td><td>₹2,345</td><td>NSE/Screener 12-Oct</td><td>ValueResearch</td><td><span class="tag tV">V</span></td><td>✔</td></tr>
+        <tr><td>ROCE (FY26)</td><td>38% / 29.09%</td><td>AR ratios</td><td>Screener</td><td><span class="tag tS">S</span></td><td>Definitional</td></tr>
+        <tr><td>Key model driver</td><td>FY27 op EBITDA 7,310 base</td><td>Q1 FY27 press release</td><td>PL FY27E 7,562</td><td><span class="tag tA">A</span></td><td>Consistent</td></tr>
+        <tr><td>Latest EBITDA</td><td>5,909 op / 6,617 total</td><td>Q4FY26 deck</td><td>AR</td><td><span class="tag tV">V</span></td><td>✔</td></tr>
+        <tr><td>Latest sales</td><td>26,536.77 cr</td><td>FY26 press release</td><td>AR; Screener</td><td><span class="tag tV">V</span></td><td>✔</td></tr>
+        <tr><td>M-score inputs</td><td>SGI 1.84, DSRI 1.26, TATA 0.075</td><td>Screener P&amp;L + BS</td><td>Derived</td><td><span class="tag tD">D</span></td><td>✔</td></tr>
+        <tr><td>Interest cover</td><td>17.6x</td><td>Derived (EBIT 4,919/280)</td><td>ValueResearch 18.29</td><td><span class="tag tD">D</span></td><td>✔</td></tr>
+        <tr><td>D/E</td><td>0.21x</td><td>AR FY26 ratios</td><td>CARE (0.2x FY25)</td><td><span class="tag tV">V</span></td><td>✔</td></tr>
+      </tbody>
+    </table></div>
+    <p class="sub" style="margin-top:10px"><strong>Tag counts:</strong> [V] ≈ 20 · [S] ≈ 35 · [D] ≈ 20 · [A] ≈ 12 · [N] ≈ 6. Three of eight critical figures are [S] → data confidence LOW → verdict capped at Watch; combined with the Section 9 hard stop → verdict <strong>Pass</strong>. Corrections after audit: standardised to operating EBITDA; total debt shown as a range; receivable-day dispersion flagged; unsupported variant-perception claim removed.</p>
+  </section>
+
+  <!-- WHAT WOULD CHANGE MY MIND -->
+  <section class="fadein">
+    <div class="section-label">What would change my mind</div>
+    <div class="card">
+      <ol style="margin:0;padding-left:20px">
+        <li>US CBP appeal succeeds and the finding is confined to immaterial historical entries.</li>
+        <li>Operating margin stabilises above ~20% for two consecutive quarters as cells ramp.</li>
+        <li>CFO/PAT recovers above 1.0x and FCF turns positive.</li>
+        <li>A specific, evidence-backed variant emerges that the consensus is not pricing.</li>
+        <li>Governance re-rates clean (no further senior exits; no new regulatory action).</li>
+      </ol>
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>VERIDIAN</strong> — evidence-only equity research. Consolidated basis; FY labels (FY26 = Apr-25 to Mar-26). Tags: [V] verified (two sources) · [S] single-source · [D] derived · [A] assumption · [N] not available. Sources include Waaree Integrated Annual Report FY26, FY26/Q1 FY27 exchange filings and press releases, CARE Ratings rationale (05-Feb-26), NSE/BSE shareholding pattern (30-Jun-26), SEBI and BSE regulatory filings, US CBP EAPA coverage, and Screener (aggregator, speed only). This is analysis, not investment advice; it is not a recommendation to buy or sell. Verify all figures against the primary filings before acting.</p>
+  </footer>
+
+</div>
+</body>
+</html>
